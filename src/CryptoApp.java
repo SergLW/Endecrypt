@@ -2,7 +2,9 @@ public class CryptoApp {
     private String command;
     private String pathFile;
     private String key;
-
+/*
+*  Временно, пока как заглушка
+* */
     public CryptoApp(String command, String pathFile, String key) {
         this.command = command;
         this.pathFile = pathFile;

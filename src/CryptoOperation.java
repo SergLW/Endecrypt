@@ -45,7 +45,6 @@ public class CryptoOperation {
     public String decrypt(String textFromFile,  int key) {
         return algorithm(textFromFile, -key);
     }
-
     /**
      * @param textFromFile - Извлеченный из файла текст
      * @param key - Ключ смещения ("+" - encrypt, "-" - decrypt)

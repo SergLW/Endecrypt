@@ -15,8 +15,8 @@ public class FileOperation {
      * @param pathFile - путь к файлу в String
      * @return - Прочитанный файл преобразован сразу в строку
      */
-    public String readFile(String pathFile) {
-        Path path = Path.of(pathFile);
+    public static String readFile(String pathFile) {
+        Path path = Path.of(checkPath(pathFile));
         String content = null;
         try {
             content = Files.readString(path);
@@ -31,8 +31,8 @@ public class FileOperation {
      * @param pathFile - путь к прочитанному файлу в String
      * @param content - преобразованный текст из прочитанного файла
      */
-    public void writeFile(Commande command, String pathFile, String content) {
-        Path path = getPath(command, pathFile);
+    public static void writeFile(Commands command, String pathFile, String content) {
+        Path path = getPath(command, checkPath(pathFile));
         try {
             Files.writeString(path, content);
             System.out.println("File written to " + path.toString());
@@ -46,8 +46,8 @@ public class FileOperation {
      * @param pathFile - путь к прочитанному файлу в String
      * @return - подготавливает путь и переименовывает преобразованный файл, в зависимости от типа операции command
      */
-    private Path getPath(Commande command, String pathFile) {
-        Path path = Path.of(pathFile);
+    private static Path getPath(Commands command, String pathFile) {
+        Path path = Path.of(checkPath(pathFile));
         String nameFile = path.getFileName().toString();
         int indexDotFile = nameFile.lastIndexOf('.');
         Path dir;
@@ -59,19 +59,43 @@ public class FileOperation {
             dir = Path.of(".");
         }
 
-        if (command == Commande.ENCRYPT) {
+        if (command == Commands.ENCRYPT) {
             if (indexDotFile == -1) {
                 renamedFile = nameFile + "_[ENCRYPTED]";
             } else {
                 renamedFile = nameFile.substring(0, indexDotFile) + "_[ENCRYPTED]" + nameFile.substring(indexDotFile);
             }
-        } else if (command == Commande.DECRYPT || command == Commande.BRUTE_FORCE) {
+        } else if (command == Commands.DECRYPT || command == Commands.BRUTE_FORCE) {
                 renamedFile = nameFile.replace("_[ENCRYPTED]", "_[DECRYPTED]");
         } else {
             renamedFile = nameFile;
         }
 
         return dir.resolve(renamedFile);
+    }
+
+    /**
+     * @param pathName путь к файлу
+     * @return - возвращает проверенную строку адреса к файлу
+     */
+    private static String checkPath(String pathName) {
+        String checkPath = "";
+
+        if (pathName.startsWith("\"") && pathName.endsWith("\"")) {
+            checkPath = pathName.substring(1, pathName.length() - 1);
+        } else {
+            checkPath = pathName;
+        }
+
+        Path path = Path.of(checkPath);
+        String fileName = path.getFileName().toString();
+        for(char c: Alphabet.INVALID_CHARS) {
+            if (fileName.indexOf(c) > 0) {
+                throw new IllegalArgumentException("В имени файла есть запрещенные символы!" + c);
+            }
+        }
+
+        return checkPath;
     }
 
 }

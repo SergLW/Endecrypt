@@ -15,7 +15,7 @@ public class CryptoOperation {
      * @param key - Ключ смещения
      * @return - Возвращает закодированную строку в String с учетом ключа
      */
-    public String encrypt(String textFromFile, int key) {
+    public static String encrypt(String textFromFile, int key) {
         return algorithm(textFromFile, key);
     }
 
@@ -24,7 +24,7 @@ public class CryptoOperation {
      * @param key - Ключ смещения
      * @return - Возвращает декодированную строку в String с учетом ключа
      */
-    public String decrypt(String textFromFile,  int key) {
+    public static String decrypt(String textFromFile,  int key) {
         return algorithm(textFromFile, -key);
     }
 
@@ -33,7 +33,7 @@ public class CryptoOperation {
      * @param key - Ключ смещения ("+" - encrypt, "-" - decrypt)
      * @return -  Возвращает закодированную/декодированную строку в String - реализация для методов encrypt()/decrypt()
      */
-    private String algorithm(String textFromFile, int key) {
+    private static String algorithm(String textFromFile, int key) {
         StringBuilder builder = new StringBuilder();
 
         for (char c : textFromFile.toCharArray()) {
@@ -61,7 +61,7 @@ public class CryptoOperation {
      * @param key - Ключ смещения
      * @return - Результирующий номер буквы с учетом смещения - для метода algorithm()
      */
-    private int calculation(List<String> alphabet, String letter, int key) {
+    private static int calculation(List<String> alphabet, String letter, int key) {
         int index = alphabet.indexOf(letter);
         int size = alphabet.size();
         return (index + key + size) % size;

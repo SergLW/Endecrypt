@@ -20,9 +20,10 @@ public class Alphabet {
     );
 
     public static final List<String> SYMBOLS = Arrays.asList(
-            "*", "/", "\\", "$", "%", "&", "#", "@", "!",
-            "(", ")", "{", "}", "[", "]", ",", ";", "'", "\"",
-            "<", ">", "|", "^", "~", ".", "`"
+            ".", ",", "«", "»", "\"", "'", ":", "!", "?", " "
+    );
+    public static final List<Character> INVALID_CHARS = List.of(
+            '<', '>', ':', '"', '/', '\\', '|', '?', '*'
     );
 
 

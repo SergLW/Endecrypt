@@ -5,6 +5,9 @@
  * - переименование файла
  */
 
+import AlgorithmCes.Alphabet;
+import Exeptions.InvalidFileExtensionException;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,8 +22,10 @@ public class FileOperation {
         Path path = Path.of(checkPath(pathFile));
         String content = null;
         try {
-            content = Files.readString(path);
-        } catch (IOException e) {
+            if (checkIsTextFile(checkPath(pathFile))) {
+                content = Files.readString(path);
+            }
+        } catch (InvalidFileExtensionException | IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
         return content;
@@ -35,9 +40,9 @@ public class FileOperation {
         Path path = getPath(command, checkPath(pathFile));
         try {
             Files.writeString(path, content);
-            System.out.println("File written to " + path.toString());
+            System.out.println("Файл сохранен по указанному пути: " + path.toString());
         } catch (IOException e) {
-            System.out.println("Error writing file: " + e.getMessage());
+            System.out.println("Не удалось прочитать файл: " + e.getMessage());
         }
     }
 
@@ -79,15 +84,15 @@ public class FileOperation {
      * @return - возвращает проверенную строку адреса к файлу
      */
     private static String checkPath(String pathName) {
-        String checkPath = "";
+        String checkedPath = "";
 
         if (pathName.startsWith("\"") && pathName.endsWith("\"")) {
-            checkPath = pathName.substring(1, pathName.length() - 1);
+            checkedPath = pathName.substring(1, pathName.length() - 1);
         } else {
-            checkPath = pathName;
+            checkedPath = pathName;
         }
 
-        Path path = Path.of(checkPath);
+        Path path = Path.of(checkedPath);
         String fileName = path.getFileName().toString();
         for(char c: Alphabet.INVALID_CHARS) {
             if (fileName.indexOf(c) > 0) {
@@ -95,7 +100,28 @@ public class FileOperation {
             }
         }
 
-        return checkPath;
+        return checkedPath;
     }
 
+    /**
+     * @param pathName - Путь к файлу
+     * @return - проверяет содержимое файла - текстовый формат или бинарный.
+     */
+    private static boolean checkIsTextFile(String pathName) {
+        Path path = Path.of(pathName);
+        try {
+            byte[] bytesCheckedFile = Files.readAllBytes(path);
+            int partOfFile = Math.min(bytesCheckedFile.length, 1024);
+            for (int i = 0; i < partOfFile; i++) {
+                byte b = bytesCheckedFile[i];
+                if (b < 0x09)
+                    return false; // есть управляющие символы
+                if (b > 0x0D && b <0x20)
+                    return false; // есть управляющие символы
+            }
+        } catch (IOException e) {
+            System.out.println("Не удалось прочитать файл: " + e.getMessage());
+        }
+        return true;
+    }
 }

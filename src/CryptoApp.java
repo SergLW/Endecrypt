@@ -1,9 +1,13 @@
+import AlgorithmCes.*;
+import Exeptions.InvalidRunParameterException;
+import Exeptions.MissingKeyInTextException;
+
 /**
  * Главный класс приложения
  */
 public class CryptoApp {
     private String[] args;
-
+    private static final String addKeyToText = "-k";
     /**
      *
      * @param args - параметры запуска приложения
@@ -33,6 +37,7 @@ public class CryptoApp {
 
     /**
      * Логика работы с аргументами параметров main(String[] args)
+     * args.length = 4 - вызов методов для ENCRYPT/DECRYPT с параметром -k (с добавлением ключа шифрования в текст)
      * args.length = 3 - вызов методов для ENCRYPT/DECRYPT
      * args.length = 2 - вызов методов для BRUTE_FORCE
      * args.length = 1 - вызов методов HELP
@@ -40,49 +45,84 @@ public class CryptoApp {
      */
     private void argsCrypt(Commands command) {
         String textFromFile;
-        if (args.length == 3) {
+        CryptoAlgorithm algorithm;
+        KeyMethods keyMethods = new KeyMethods();
+        if (args.length == 4) {
+            boolean withKey = args[3].equals(addKeyToText);
             textFromFile = FileOperation.readFile(args[1]);
-            int key = Integer.parseInt(checkKey(args[2])); // сразу с проверкой Key на число
+            int key = Integer.parseInt(keyMethods.checkKey(args[2])); // сразу с проверкой Key на число
+
+            if (command == Commands.ENCRYPT && withKey) {
+                algorithm = new Encrypt();
+                String encryptedText = algorithm.run(textFromFile, key);
+                String encryptedTextWithKey = keyMethods.insertKey(encryptedText, key);
+                FileOperation.writeFile(Commands.ENCRYPT, args[1], encryptedTextWithKey);
+            } else if (command == Commands.DECRYPT && withKey) {
+                algorithm = new Decrypt();
+                if (keyMethods.haveKey(textFromFile)) {
+                    int decryptedKey = keyMethods.decryptKey(textFromFile);
+                    if (decryptedKey == key) {
+                        String textFromFileWithoutKey = keyMethods.deleteKey(textFromFile);
+                        String decryptedText = algorithm.run(textFromFileWithoutKey, key);
+                        FileOperation.writeFile(Commands.DECRYPT, args[1], decryptedText);
+                    } else {
+                        throw new MissingKeyInTextException("Неверный ключ!");
+                    }
+                }
+            } else {
+                if (!withKey) {
+                    throw new InvalidRunParameterException("Не верный параметр! Для расшифровки текста с ключом в тексте используйте команду 'ENCRYPT path key -k'");
+                } else {
+                    throw new InvalidRunParameterException("Неизвестная команда: " + command);
+                }
+            }
+
+        } else if (args.length == 3) {
+            textFromFile = FileOperation.readFile(args[1]);
+            int key = Integer.parseInt(keyMethods.checkKey(args[2])); // сразу с проверкой Key на число
+
             if (command == Commands.ENCRYPT) {
-                String encryptedText = CryptoOperation.encrypt(textFromFile, key);
+                algorithm = new Encrypt();
+                String encryptedText = algorithm.run(textFromFile, key);
                 FileOperation.writeFile(Commands.ENCRYPT, args[1], encryptedText);
             } else if (command == Commands.DECRYPT) {
-                String decryptedText = CryptoOperation.decrypt(textFromFile, key);
+                algorithm = new Decrypt();
+                String decryptedText = algorithm.run(textFromFile, key);
                 FileOperation.writeFile(Commands.DECRYPT, args[1], decryptedText);
             } else {
-                System.out.println("Unknown command: " + command);
+                throw new InvalidRunParameterException("Неизвестная команда: " + command);
             }
+
         } else if (args.length == 2) {
             textFromFile = FileOperation.readFile(args[1]);
+
             if (command == Commands.BRUTE_FORCE) {
-                System.out.println("Nicht fertig");
+                BruteForce bruteForce = new BruteForce();
+
+                if (keyMethods.haveKey(textFromFile)) {
+                    int decryptedKey = keyMethods.decryptKey(textFromFile);
+                    String textFromFileWithoutKey = keyMethods.deleteKey(textFromFile);
+                    String decryptedText = bruteForce.run(textFromFileWithoutKey, decryptedKey);
+                    FileOperation.writeFile(Commands.BRUTE_FORCE, args[1], decryptedText);
+                    System.out.printf("Файл был зашифрован ключом = %d\n", decryptedKey);
+                } else {
+                    String decryptedText = bruteForce.runWithoutKey(textFromFile);
+                    FileOperation.writeFile(Commands.BRUTE_FORCE, args[1], decryptedText);
+                }
+
             } else {
-                System.out.println("Unknown command: " + command);
+                throw new InvalidRunParameterException("Неизвестная команда: " + command);
             }
+
         } else if (args.length == 1) {
             if (command == Commands.HELP) {
                 System.out.println("Вызов помощи");
             } else {
-                System.out.println("Unknown command: " + command);
+                throw new InvalidRunParameterException("Неизвестная команда: " + command);
             }
+
         } else {
             System.out.println("Usage: encrypt/decrypt path key");
         }
     }
-
-    /**
-     * @param key - значение ключа args[2]
-     * @return - Возвращает исходное значение, если args[2] передано число, а не буква/символ
-     */
-    private String checkKey(String key) {
-        int keyInt;
-        try {
-            keyInt = Integer.parseInt(key);
-            return key;
-        } catch (NumberFormatException e) {
-            return "Ключ должен быть числом!";
-        }
-    }
-
-
 }

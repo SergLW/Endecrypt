@@ -1,4 +1,4 @@
-package Exeptions;
+package EndecryptApp.Exeptions;
 
 public class MissingKeyInTextException extends RuntimeException {
     public MissingKeyInTextException(String message) {

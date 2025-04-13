@@ -1,3 +1,5 @@
+package EndecryptApp.ArgsHandler;
+
 public enum Commands {
     ENCRYPT,
     DECRYPT,

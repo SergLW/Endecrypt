@@ -1,7 +1,7 @@
-package AlgorithmCes;
+package EndecryptApp.AlgorithmCes;
 
-import Exeptions.MissingKeyInTextException;
-import Exeptions.TextAlreadyEncodedException;
+import EndecryptApp.Exeptions.MissingKeyInTextException;
+import EndecryptApp.Exeptions.TextAlreadyEncodedException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

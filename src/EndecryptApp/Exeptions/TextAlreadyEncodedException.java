@@ -1,4 +1,4 @@
-package Exeptions;
+package EndecryptApp.Exeptions;
 
 public class TextAlreadyEncodedException extends RuntimeException {
 

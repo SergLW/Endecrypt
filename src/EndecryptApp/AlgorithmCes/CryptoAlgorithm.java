@@ -1,13 +1,9 @@
-package AlgorithmCes;
+package EndecryptApp.AlgorithmCes;
 /**
  * Класс с алгоритмом encrypt/decrypt
  */
 
-import Exeptions.MissingKeyInTextException;
-
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class CryptoAlgorithm {
 
@@ -29,12 +25,34 @@ public abstract class CryptoAlgorithm {
             for (char c : textFromFile.toCharArray()) {
                 String letter = String.valueOf(c); // Один символ из файла
                 int indexLetter;
-                if (Alphabet.UPPER.contains(letter)) {
-                    indexLetter = calculation(Alphabet.UPPER, letter, key); // Расчет результирующего номера буквы с учетом смещения
-                    builder.append(Alphabet.UPPER.get(indexLetter));
-                } else if (Alphabet.LOWER.contains(letter)) {
-                    indexLetter = calculation(Alphabet.LOWER, letter, key); // Расчет результирующего номера буквы с учетом смещения
-                    builder.append(Alphabet.LOWER.get(indexLetter));
+                if (Alphabet.UPPER_EN.contains(letter)) {
+                    indexLetter = calculation(Alphabet.UPPER_EN, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                    if (indexLetter >= 0) {
+                        builder.append(Alphabet.UPPER_EN.get(indexLetter));
+                    } else {
+                        builder.append(letter);
+                    }
+                } else if (Alphabet.LOWER_EN.contains(letter)) {
+                    indexLetter = calculation(Alphabet.LOWER_EN, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                    if (indexLetter >= 0) {
+                        builder.append(Alphabet.LOWER_EN.get(indexLetter));
+                    } else {
+                        builder.append(letter);
+                    }
+                } else if (Alphabet.UPPER_UA.contains(letter)) {
+                    indexLetter = calculation(Alphabet.UPPER_UA, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                    if (indexLetter >= 0) {
+                        builder.append(Alphabet.UPPER_UA.get(indexLetter));
+                    } else {
+                        builder.append(letter);
+                    }
+                } else if (Alphabet.LOWER_UA.contains(letter)) {
+                    indexLetter = calculation(Alphabet.LOWER_UA, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                    if (indexLetter >= 0) {
+                        builder.append(Alphabet.LOWER_UA.get(indexLetter));
+                    } else {
+                        builder.append(letter);
+                    }
                 } else if (Alphabet.SYMBOLS.contains(letter)) {
                     indexLetter = calculation(Alphabet.SYMBOLS, letter, key); // Расчет результирующего номера буквы с учетом смещения
                     if (indexLetter >= 0) {
@@ -54,7 +72,7 @@ public abstract class CryptoAlgorithm {
     }
 
     /**
-     * @param alphabet - Список словаря-константы из класса AlgorithmCes.Alphabet
+     * @param alphabet - Список словаря-константы из класса EndecryptApp.AlgorithmCes.Alphabet
      * @param letter - Один символ из строки полученной из файла
      * @param key - Ключ смещения
      * @return - Результирующий номер буквы с учетом смещения - для метода algorithm()

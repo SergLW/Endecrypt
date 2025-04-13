@@ -1,12 +1,13 @@
-/**
+package EndecryptApp; /**
  * Работа с файлами:
  * - чтение файла с преобразованием в строку
  * - запись из строки в файл
  * - переименование файла
  */
 
-import AlgorithmCes.Alphabet;
-import Exeptions.InvalidFileExtensionException;
+import EndecryptApp.AlgorithmCes.Alphabet;
+import EndecryptApp.ArgsHandler.Commands;
+import EndecryptApp.Exeptions.InvalidFileExtensionException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,16 +20,16 @@ public class FileOperation {
      * @return - Прочитанный файл преобразован сразу в строку
      */
     public static String readFile(String pathFile) {
-        Path path = Path.of(checkPath(pathFile));
-        String content = null;
         try {
+            Path path = Path.of(checkPath(pathFile));
             if (checkIsTextFile(checkPath(pathFile))) {
-                content = Files.readString(path);
+                return Files.readString(path);
+            } else {
+                throw new InvalidFileExtensionException();
             }
-        } catch (InvalidFileExtensionException | IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
+        } catch (IOException e) {
+                throw new IllegalArgumentException("Ошибка чтения файла");
         }
-        return content;
     }
 
     /**
@@ -37,12 +38,12 @@ public class FileOperation {
      * @param content - преобразованный текст из прочитанного файла
      */
     public static void writeFile(Commands command, String pathFile, String content) {
-        Path path = getPath(command, checkPath(pathFile));
         try {
+            Path path = getPath(command, checkPath(pathFile));
             Files.writeString(path, content);
-            System.out.println("Файл сохранен по указанному пути: " + path.toString());
+            System.out.println("Файл преобразован и сохранен по указанному пути: " + path.toString());
         } catch (IOException e) {
-            System.out.println("Не удалось прочитать файл: " + e.getMessage());
+            throw new InvalidFileExtensionException("Не удалось сохранить файл");
         }
     }
 
@@ -71,7 +72,15 @@ public class FileOperation {
                 renamedFile = nameFile.substring(0, indexDotFile) + "_[ENCRYPTED]" + nameFile.substring(indexDotFile);
             }
         } else if (command == Commands.DECRYPT || command == Commands.BRUTE_FORCE) {
+            if (nameFile.contains("_[ENCRYPTED]")) {
                 renamedFile = nameFile.replace("_[ENCRYPTED]", "_[DECRYPTED]");
+            } else {
+                if (indexDotFile == -1) {
+                    renamedFile = nameFile + "_[DECRYPTED]";
+                } else {
+                    renamedFile = nameFile.substring(0, indexDotFile) + "_[DECRYPTED]" + nameFile.substring(indexDotFile);
+                }
+            }
         } else {
             renamedFile = nameFile;
         }
@@ -108,19 +117,17 @@ public class FileOperation {
      * @return - проверяет содержимое файла - текстовый формат или бинарный.
      */
     private static boolean checkIsTextFile(String pathName) {
-        Path path = Path.of(pathName);
         try {
+            Path path = Path.of(pathName);
             byte[] bytesCheckedFile = Files.readAllBytes(path);
             int partOfFile = Math.min(bytesCheckedFile.length, 1024);
             for (int i = 0; i < partOfFile; i++) {
                 byte b = bytesCheckedFile[i];
-                if (b < 0x09)
-                    return false; // есть управляющие символы
-                if (b > 0x0D && b <0x20)
+                if (b == 0)
                     return false; // есть управляющие символы
             }
         } catch (IOException e) {
-            System.out.println("Не удалось прочитать файл: " + e.getMessage());
+            throw new IllegalArgumentException("Ошибка чтения файла");
         }
         return true;
     }

@@ -1,6 +1,4 @@
-package AlgorithmCes;
-
-import Exeptions.TextAlreadyEncodedException;
+package EndecryptApp.AlgorithmCes;
 
 public class Encrypt extends CryptoAlgorithm {
     /**

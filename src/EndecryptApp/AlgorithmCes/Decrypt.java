@@ -1,6 +1,4 @@
-package AlgorithmCes;
-
-import Exeptions.MissingKeyInTextException;
+package EndecryptApp.AlgorithmCes;
 
 public class Decrypt extends CryptoAlgorithm {
     /**

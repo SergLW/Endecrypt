@@ -41,6 +41,20 @@ public class Alphabet {
             ".", ",", "«", "»", "\"", "'", ":", "!", "?", " "
     );
 
+    public static final List<String> DIGITS = Arrays.asList(
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+    );
+
+    public static List<List<String>> getAllAlphabets() {
+        return List.of(
+                UPPER_EN,
+                LOWER_EN,
+                UPPER_UA,
+                LOWER_UA,
+                SYMBOLS,
+                DIGITS
+        );
+    }
     /**
      * Словарь для проверки запрещенных символов в названии переданного файла
      */
@@ -73,5 +87,7 @@ public class Alphabet {
             "але", "чи", "за", "від", "його", "її", "тут", "там", "ще", "уже",
             "коли", "тому", "хто", "щоб", "може", "треба", "без", "після", "перед", "між"
     );
+
+
 
 }

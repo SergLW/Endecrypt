@@ -3,6 +3,8 @@ package EndecryptApp.AlgorithmCes;
  * Класс с алгоритмом encrypt/decrypt
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class CryptoAlgorithm {
@@ -21,51 +23,69 @@ public abstract class CryptoAlgorithm {
      */
     String algorithm(String textFromFile, int key) {
         StringBuilder builder = new StringBuilder();
-        if (textFromFile != null) {
-            for (char c : textFromFile.toCharArray()) {
-                String letter = String.valueOf(c); // Один символ из файла
-                int indexLetter;
-                if (Alphabet.UPPER_EN.contains(letter)) {
-                    indexLetter = calculation(Alphabet.UPPER_EN, letter, key); // Расчет результирующего номера буквы с учетом смещения
+
+        if (textFromFile == null || textFromFile.isEmpty()) {
+            throw new IllegalArgumentException("Файл пуст!");
+        }
+
+        List<List<String>> alphabets = Alphabet.getAllAlphabets();
+
+        for (char c : textFromFile.toCharArray()) {
+            String letter = String.valueOf(c); // Один символ из файла
+            boolean isFound = false;
+
+            for (List<String> alphabet : alphabets) {
+                if (alphabet.contains(letter)) {
+                    int indexLetter = calculation(alphabet,letter,key);
                     if (indexLetter >= 0) {
-                        builder.append(Alphabet.UPPER_EN.get(indexLetter));
+                        builder.append(alphabet.get(indexLetter));
                     } else {
                         builder.append(letter);
                     }
-                } else if (Alphabet.LOWER_EN.contains(letter)) {
-                    indexLetter = calculation(Alphabet.LOWER_EN, letter, key); // Расчет результирующего номера буквы с учетом смещения
-                    if (indexLetter >= 0) {
-                        builder.append(Alphabet.LOWER_EN.get(indexLetter));
-                    } else {
-                        builder.append(letter);
-                    }
-                } else if (Alphabet.UPPER_UA.contains(letter)) {
-                    indexLetter = calculation(Alphabet.UPPER_UA, letter, key); // Расчет результирующего номера буквы с учетом смещения
-                    if (indexLetter >= 0) {
-                        builder.append(Alphabet.UPPER_UA.get(indexLetter));
-                    } else {
-                        builder.append(letter);
-                    }
-                } else if (Alphabet.LOWER_UA.contains(letter)) {
-                    indexLetter = calculation(Alphabet.LOWER_UA, letter, key); // Расчет результирующего номера буквы с учетом смещения
-                    if (indexLetter >= 0) {
-                        builder.append(Alphabet.LOWER_UA.get(indexLetter));
-                    } else {
-                        builder.append(letter);
-                    }
-                } else if (Alphabet.SYMBOLS.contains(letter)) {
-                    indexLetter = calculation(Alphabet.SYMBOLS, letter, key); // Расчет результирующего номера буквы с учетом смещения
-                    if (indexLetter >= 0) {
-                        builder.append(Alphabet.SYMBOLS.get(indexLetter));
-                    } else {
-                        builder.append(letter);
-                    }
+                    isFound = true;
+                    break;
+                }
+            }
+            if (!isFound) builder.append(letter);
+/*
+            if (Alphabet.UPPER_EN.contains(letter)) {
+                indexLetter = calculation(Alphabet.UPPER_EN, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                if (indexLetter >= 0) {
+                    builder.append(Alphabet.UPPER_EN.get(indexLetter));
                 } else {
                     builder.append(letter);
                 }
-            }
-        } else {
-            throw new IllegalArgumentException("Файл пуст!");
+            } else if (Alphabet.LOWER_EN.contains(letter)) {
+                indexLetter = calculation(Alphabet.LOWER_EN, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                if (indexLetter >= 0) {
+                    builder.append(Alphabet.LOWER_EN.get(indexLetter));
+                } else {
+                    builder.append(letter);
+                }
+            } else if (Alphabet.UPPER_UA.contains(letter)) {
+                indexLetter = calculation(Alphabet.UPPER_UA, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                if (indexLetter >= 0) {
+                    builder.append(Alphabet.UPPER_UA.get(indexLetter));
+                } else {
+                    builder.append(letter);
+                }
+            } else if (Alphabet.LOWER_UA.contains(letter)) {
+                indexLetter = calculation(Alphabet.LOWER_UA, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                if (indexLetter >= 0) {
+                    builder.append(Alphabet.LOWER_UA.get(indexLetter));
+                } else {
+                    builder.append(letter);
+                }
+            } else if (Alphabet.SYMBOLS.contains(letter)) {
+                indexLetter = calculation(Alphabet.SYMBOLS, letter, key); // Расчет результирующего номера буквы с учетом смещения
+                if (indexLetter >= 0) {
+                    builder.append(Alphabet.SYMBOLS.get(indexLetter));
+                } else {
+                    builder.append(letter);
+                }
+            } else {
+                builder.append(letter);
+            }*/
         }
 
         return builder.toString();

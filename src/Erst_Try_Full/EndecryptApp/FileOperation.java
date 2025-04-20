@@ -1,13 +1,8 @@
-package EndecryptApp; /**
- * Работа с файлами:
- * - чтение файла с преобразованием в строку
- * - запись из строки в файл
- * - переименование файла
- */
+package Erst_Try_Full.EndecryptApp;
 
-import EndecryptApp.AlgorithmCes.Alphabet;
-import EndecryptApp.ArgsHandler.Commands;
-import EndecryptApp.Exeptions.InvalidFileExtensionException;
+import Erst_Try_Full.EndecryptApp.AlgorithmCes.Alphabet;
+import Erst_Try_Full.EndecryptApp.ArgsHandler.Commands;
+import Erst_Try_Full.EndecryptApp.Exeptions.InvalidFileExtensionException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,10 +10,6 @@ import java.nio.file.Path;
 
 public class FileOperation {
 
-    /**
-     * @param pathFile - путь к файлу в String
-     * @return - Прочитанный файл преобразован сразу в строку
-     */
     public static String readFile(String pathFile) {
         try {
             Path path = Path.of(checkPath(pathFile));
@@ -32,11 +23,6 @@ public class FileOperation {
         }
     }
 
-    /**
-     * @param command - args[0] - тип операции
-     * @param pathFile - путь к прочитанному файлу в String
-     * @param content - преобразованный текст из прочитанного файла
-     */
     public static void writeFile(Commands command, String pathFile, String content) {
         try {
             Path path = getPath(command, checkPath(pathFile));
@@ -47,11 +33,6 @@ public class FileOperation {
         }
     }
 
-    /**
-     * @param command - args[0] - тип операции
-     * @param pathFile - путь к прочитанному файлу в String
-     * @return - подготавливает путь и переименовывает преобразованный файл, в зависимости от типа операции command
-     */
     private static Path getPath(Commands command, String pathFile) {
         Path path = Path.of(checkPath(pathFile));
         String nameFile = path.getFileName().toString();
@@ -88,10 +69,6 @@ public class FileOperation {
         return dir.resolve(renamedFile);
     }
 
-    /**
-     * @param pathName путь к файлу
-     * @return - возвращает проверенную строку адреса к файлу
-     */
     private static String checkPath(String pathName) {
         String checkedPath = "";
 
@@ -112,10 +89,6 @@ public class FileOperation {
         return checkedPath;
     }
 
-    /**
-     * @param pathName - Путь к файлу
-     * @return - проверяет содержимое файла - текстовый формат или бинарный.
-     */
     private static boolean checkIsTextFile(String pathName) {
         try {
             Path path = Path.of(pathName);

@@ -1,4 +1,4 @@
-package EndecryptApp;
+package Erst_Try_Full.EndecryptApp;
 
 import java.util.ArrayList;
 import java.util.Scanner;

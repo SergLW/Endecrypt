@@ -1,19 +1,16 @@
-package EndecryptApp;
+package Erst_Try_Full.EndecryptApp;
 
-import EndecryptApp.AlgorithmCes.*;
-import EndecryptApp.ArgsHandler.ArgsHandlerMethods;
-import EndecryptApp.ArgsHandler.Commands;
-import EndecryptApp.Exeptions.InvalidRunParameterException;
+import Erst_Try_Full.EndecryptApp.AlgorithmCes.*;
+import Erst_Try_Full.EndecryptApp.ArgsHandler.ArgsHandlerMethods;
+import Erst_Try_Full.EndecryptApp.ArgsHandler.Commands;
+import Erst_Try_Full.EndecryptApp.Exeptions.InvalidRunParameterException;
 
 /**
- * Главный класс приложения
+ * First_Try_Full.Main class
  */
 public class CryptoApp {
     private String[] args;
 
-    /**
-     * @param args - параметры запуска приложения
-     */
     public CryptoApp(String[] args) {
         this.args = args;
         try {
@@ -28,9 +25,6 @@ public class CryptoApp {
         }
     }
 
-    /**
-     *  принимает значение первого параметра main(String[] args)
-     */
     private void argsUse() {
         if (args.length != 0) {
             String command = args[0].toUpperCase();
@@ -46,14 +40,6 @@ public class CryptoApp {
         }
     }
 
-    /**
-     * Логика работы с аргументами параметров main(String[] args)
-     * args.length = 4 - вызов методов для ENCRYPT/DECRYPT с параметром -k (с добавлением ключа шифрования в текст)
-     * args.length = 3 - вызов методов для ENCRYPT/DECRYPT
-     * args.length = 2 - вызов методов для BRUTE_FORCE
-     * args.length = 1 - вызов метода HELP
-     * @param command - фиксированные значения args[0]
-     */
     private void argsCrypt(Commands command) {
         KeyMethods keyMethods = new KeyMethods();
         ArgsHandlerMethods argsMethods = new ArgsHandlerMethods();

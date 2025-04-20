@@ -1,4 +1,4 @@
-package EndecryptApp.Exeptions;
+package Erst_Try_Full.EndecryptApp.Exeptions;
 
 public class InvalidRunParameterException extends RuntimeException {
 

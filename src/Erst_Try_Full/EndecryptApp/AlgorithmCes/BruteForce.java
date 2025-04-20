@@ -1,4 +1,4 @@
-package EndecryptApp.AlgorithmCes;
+package Erst_Try_Full.EndecryptApp.AlgorithmCes;
 
 import java.util.List;
 
@@ -8,10 +8,6 @@ public class BruteForce extends CryptoAlgorithm {
         return algorithm(textFromFile, -key);
     }
 
-    /**
-     * @param textFromFile - Закодированный текси без встроенного ключа
-     * @return - возвращает лучший результат псоле перебора возможных ключей
-     */
     public String decryptWithoutKey(String textFromFile) {
         int maxCount = 0;
         String bestDecryptedText = textFromFile;
@@ -30,10 +26,6 @@ public class BruteForce extends CryptoAlgorithm {
         return bestDecryptedText;
     }
 
-    /**
-     * @param testDecrypted - Пробный декодированный текст
-     * @return - считает количество совпадений со словарем часто встречающихся слов
-     */
     private int countTextWords(String testDecrypted) {
         List<String> alphabetWords = detectAlphabetWords(testDecrypted);
         int count = 0;
@@ -45,11 +37,6 @@ public class BruteForce extends CryptoAlgorithm {
         return count;
     }
 
-    /**
-     * @param testDecrypted - Пробный декодированный текст
-     * @return - В зависимости от типа файла - простой текст или конфигурационный файл - возвращает
-     * предпочтительный список слов.
-     */
     private List<String> detectAlphabetWords(String testDecrypted) {
         int countEnglish = 0;
         int countUkrainian = 0;

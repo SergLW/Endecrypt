@@ -1,11 +1,11 @@
-package EndecryptApp.AlgorithmCes;
+package Erst_Try_Full.EndecryptApp.AlgorithmCes;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Alphabet {
     /**
-     * Набор алфавитов и символов
+     * Alphabets set
      */
     public static final List<String> UPPER_EN = Arrays.asList(
             "A", "B", "C", "D", "E", "F", "G",
@@ -56,14 +56,14 @@ public class Alphabet {
         );
     }
     /**
-     * Словарь для проверки запрещенных символов в названии переданного файла
+     * Alphabet for fileName check
      */
     public static final List<Character> INVALID_CHARS = List.of(
             '<', '>', ':', '"', '/', '\\', '|', '?', '*'
     );
 
     /**
-     * Словари для Brute-Force
+     * Alphabets for Brute-Force
      */
     public static final List<String> TEXT_WORDS_EN = List.of(
             "the", "be", "to", "of", "and", "a", "in", "that", "have", "I",

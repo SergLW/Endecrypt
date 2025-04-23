@@ -1,11 +1,7 @@
-import EndecryptApp.CryptoApp;
-
-/**
- * Endecrypt
- */
+import CryptoAppV2.Runner.ApplicationRunner;
 
 public class Main {
     public static void main(String[] args) {
-        new CryptoApp(args);
+        new ApplicationRunner(args);
     }
 }

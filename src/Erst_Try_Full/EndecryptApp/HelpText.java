@@ -1,4 +1,4 @@
-package EndecryptApp;
+package Erst_Try_Full.EndecryptApp;
 
 /**
  * Файл с описанием помощи и подсказками

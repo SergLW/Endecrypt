@@ -1,4 +1,4 @@
-package EndecryptApp.ArgsHandler;
+package Erst_Try_Full.EndecryptApp.ArgsHandler;
 
 public enum Commands {
     ENCRYPT,

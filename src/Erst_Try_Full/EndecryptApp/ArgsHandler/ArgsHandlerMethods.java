@@ -1,21 +1,15 @@
-package EndecryptApp.ArgsHandler;
+package Erst_Try_Full.EndecryptApp.ArgsHandler;
 
-import EndecryptApp.AlgorithmCes.*;
-import EndecryptApp.ConsoleMode;
-import EndecryptApp.HelpText;
-import EndecryptApp.Exeptions.InvalidRunParameterException;
-import EndecryptApp.Exeptions.MissingKeyInTextException;
-import EndecryptApp.FileOperation;
+import Erst_Try_Full.EndecryptApp.AlgorithmCes.*;
+import Erst_Try_Full.EndecryptApp.ConsoleMode;
+import Erst_Try_Full.EndecryptApp.HelpText;
+import Erst_Try_Full.EndecryptApp.Exeptions.InvalidRunParameterException;
+import Erst_Try_Full.EndecryptApp.Exeptions.MissingKeyInTextException;
+import Erst_Try_Full.EndecryptApp.FileOperation;
 
 public class ArgsHandlerMethods {
     private static final String addKeyToText = "-k";
 
-    /**
-     * Испольузется для случая, когда args.length = 4
-     * @param command - Значение Enum как первого параметра main(String[] args)
-     * @param keyMethods - Класс для работы с ключем, как третим параметром main(String[] args)
-     * @param args - принимает массив параметров main(String[] args)
-     */
     public void cryptTextWithKey(Commands command, KeyMethods keyMethods, String[] args) {
         if (args.length != 4) {
             throw new InvalidRunParameterException("Неизвестная команда");
@@ -55,12 +49,6 @@ public class ArgsHandlerMethods {
         }
     }
 
-    /**
-     * Испольузется для случая, когда args.length = 3
-     * @param command - Значение Enum как первого параметра main(String[] args)
-     * @param keyMethods - Класс для работы с ключем, как третим параметром main(String[] args)
-     * @param args - принимает массив параметров main(String[] args)
-     */
     public void cryptTextWithoutKey(Commands command, KeyMethods keyMethods, String[] args) {
         if (args.length != 3) {
             throw new InvalidRunParameterException("Неизвестная команда");
@@ -81,12 +69,6 @@ public class ArgsHandlerMethods {
         FileOperation.writeFile(command, args[1], encryptedText);
     }
 
-    /**
-     * Испольузется для случая, когда args.length = 2
-     * @param command - Значение Enum как первого параметра main(String[] args)
-     * @param keyMethods - Класс для работы с ключем, как третим параметром main(String[] args)
-     * @param args - принимает массив параметров main(String[] args)
-     */
     public void decryptBruteForce(Commands command, KeyMethods keyMethods, String[] args) {
         if (args.length != 2) {
             throw new InvalidRunParameterException("Неизвестная команда");
@@ -109,11 +91,6 @@ public class ArgsHandlerMethods {
         FileOperation.writeFile(Commands.BRUTE_FORCE, args[1], decryptedText);
     }
 
-    /**
-     * Испольузется для случая, когда args.length = 1
-     * @param command - Значение Enum как первого параметра main(String[] args)     *
-     * @param args - принимает массив параметров main(String[] args)
-     */
     public void helpTextCommand(Commands command, String[] args) {
         if (args.length != 1) {
             throw new InvalidRunParameterException("Неизвестная команда");

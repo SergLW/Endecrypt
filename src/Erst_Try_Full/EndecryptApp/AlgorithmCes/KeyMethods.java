@@ -1,27 +1,19 @@
-package EndecryptApp.AlgorithmCes;
+package Erst_Try_Full.EndecryptApp.AlgorithmCes;
 
-import EndecryptApp.Exeptions.MissingKeyInTextException;
-import EndecryptApp.Exeptions.TextAlreadyEncodedException;
+import Erst_Try_Full.EndecryptApp.Exeptions.MissingKeyInTextException;
+import Erst_Try_Full.EndecryptApp.Exeptions.TextAlreadyEncodedException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class KeyMethods {
 
-    /**
-     * @param textFromFile - Полученный String из файла
-     * @return - Проверяет содержимое файла на наличие зашифрованного ключа
-     */
     public boolean haveKey(String textFromFile) {
         Pattern pattern = Pattern.compile("\\|\\*[0-9A-Fa-f]{1,2}\\*\\|");
         Matcher matcher = pattern.matcher(textFromFile);
         return matcher.find();
     }
 
-    /**
-     * @param key - значение ключа args[2]
-     * @return - Возвращает исходное значение, если args[2] передано число, а не буква/символ
-     */
     public String checkKey(String key) {
         int keyInt;
         try {
@@ -32,11 +24,6 @@ public class KeyMethods {
         }
     }
 
-    /**
-     * @param encryptedText - Полученный закодированный String
-     * @param key - Полученный ключ из параметров args
-     * @return - Кодирует ключ в HEX, вставляет его в текст и возвращает закодированный текст вместе с ключем
-     */
     public String insertKey(String encryptedText, int key) {
         String hexKey = Integer.toHexString(key*9).toUpperCase();
         String keyMarker = "|*" + hexKey + "*|";
@@ -51,10 +38,6 @@ public class KeyMethods {
         return finishText;
     }
 
-    /**
-     * @param encryptedText - Полученный закодированный String
-     * @return - Находит, декодирует и возвращает значение ключа.
-     */
     public int decryptKey(String encryptedText) {
         if (haveKey(encryptedText)) {
             int startKey = encryptedText.indexOf("|*");
@@ -70,10 +53,6 @@ public class KeyMethods {
         }
     }
 
-    /**
-     * @param encryptedText - Полученный закодированный String
-     * @return - Удаляет из закодированного текста ключ и возвращает строку
-     */
     public String deleteKey(String encryptedText) {
         if (haveKey(encryptedText)) {
             int startKey = encryptedText.indexOf("|*");
